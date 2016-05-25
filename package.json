@@ -1,0 +1,22 @@
+{
+  "name": "request-promise-batch",
+  "version": "1.0.0",
+  "description": "Utility to group multiple HTTP-requests and execute them in serial, based on request-promise.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/isNotOkay/request-promise-batch.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/isNotOkay/request-promise-batch/issues"
+  },
+  "homepage": "https://github.com/isNotOkay/request-promise-batch#readme",
+  "dependencies": {
+    "request-promise": "^3.0.0"
+  }
+}

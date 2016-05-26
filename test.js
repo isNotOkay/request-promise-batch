@@ -1,29 +1,20 @@
 var RequestPromiseBatch = require('./index');
-console.log(RequestPromiseBatch);
-var rpb = new RequestPromiseBatch();
+
+var config = {
+    postOptions: {
+        uri: 'http://posttestserver.com/post.php'
+    }
+};
+
+var requestBatch = new RequestPromiseBatch(config);
 
 
-var getA = rpb.createGetRequest('http://www.wikipedia.de');
-var getB = rpb.createGetRequest('http://www.google.de');
-var getC = rpb.createGetRequest('http://www.google.de');
-var batchRequest1 = rpb.createBatchRequest([getA]);
-var batchRequest2 = rpb.createBatchRequest([batchRequest1, getB, getC]);
-
-//getA().then(function(){console.log('finished...');});
-
-
-batchRequest2().then(function (res) {
-    console.log('=== finished batchRequest2 ===');
-    console.log(res);
+var getGoogle = requestBatch.createBatchRequest('http://www.google.de');
+var getWikipedia = requestBatch.createBatchRequest('http://www.wikipedia.de');
+var getReddit = requestBatch.createBatchRequest('http://www.reddit.org');
+var getThemAll = requestBatch.createBatchRequest([getGoogle, getWikipedia, getReddit]);
+getThemAll().then(function (res) {
+    console.log('=== got them all ===');
 });
 
-
-function postCallback(res) {
-    var objektId = res.objektId;
-    return objektId;
-}
-
-function getCallback(res) {
-    return res.statusCode;
-}
 

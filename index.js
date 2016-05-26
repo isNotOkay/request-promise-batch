@@ -7,24 +7,27 @@ var rp = require('request-promise');
  * @constructor
  */
 function RequestPromiseBatch(config) {
+    this.defaultOptions = defaults.defaultOptions;
+    this.postOptions = defaults.postOptions;
+    this.getOptions = defaults.getOptions;
+    this.putOptions = defaults.putOptions;
+    this.deleteOptions = defaults.deleteOptions;
+    this.postCallback = defaults.postCallback;
+    this.getCallback = defaults.getCallback;
+    this.putCallback = defaults.putCallback;
+    this.deleteCallback = defaults.deleteCallback;
     if (config) {
-        config.defaultOptions ? this.defaultOptions = config.defaultOptions : defaults.defaultOptions;
-        config.getOptions ? this.getOptions = config.getOptions : defaults.getOptions;
+        if (config.defaultOptions) this.defaultOptions = config.defaultOptions;
+        if (config.postOptions) this.postOptions = config.postOptions;
+        if (config.getOptions)  this.getOptions = config.getOptions;
+        if (config.putOptions)  this.putOptions = config.putOptions;
+        if (config.deleteOptions) this.deleteOptions = config.deleteOptions;
+        if (config.postCallback)  this.postCallback = config.postCallback;
+        if (config.getCallback)  this.getCallback = config.getCallback;
+        if (config.putCallback)  this.updateCallback = config.putCallback;
+        if (config.deleteCallback)  this.deleteCallback = config.deleteCallback;
     }
-    this.defaultOptions = {
-        uri: 'http://www.google.com',
-        resolveWithFullResponse: true
-    };
-    this.getOptions = {
-        //uri: 'http://www.google.com'
-    };
-    this.postOptions = {
-        uri: 'http://posttestserver.com/post.php'
-    };
     this.rp = rp.defaults(this.defaultOptions);
-    this.getCallback = function () {
-        console.log('hello!');
-    };
 }
 
 /**
@@ -33,7 +36,7 @@ function RequestPromiseBatch(config) {
  * @param uri
  * @returns {Function}
  */
-RequestPromiseBatch.prototype.createPostRequest = function (payload, uri) {
+RequestPromiseBatch.prototype.createPostRequest = function (uri, payload) {
     var self = this;
     if (!payload) throw new Error('no payload specified');
     if (!uri) throw new Error('no uri specified');
@@ -66,11 +69,40 @@ RequestPromiseBatch.prototype.createGetRequest = function (uri) {
     return GetFunc;
 };
 
+RequestPromiseBatch.prototype.createPutRequest = function (uri, payload) {
+    var self = this;
+    if (!payload) throw new Error('no payload specified');
+    if (!uri) throw new Error('no uri specified');
+    self.putOptions.uri = uri;
+    self.putOptions.json = payload;
+
+    var PutRequest = function () {
+        return self.rp.put(self.putOptions)
+    };
+    PutRequest.callback = this.putCallback;
+    PutRequest.uri = uri;
+    return PutRequest;
+};
+
+RequestPromiseBatch.prototype.createDeleteRequest = function (uri) {
+    var self = this;
+    if (!uri) throw new Error('no uri specified');
+    this.deleteOptions.uri = uri;
+
+    var DeleteFunc = function () {
+        return self.rp.get(self.getOptions);
+    };
+    DeleteFunc.callback = this.deleteCallback;
+    DeleteFunc.uri = uri;
+    return DeleteFunc;
+};
+
 /**
  *
  * @param requests
  */
 RequestPromiseBatch.prototype.createBatchRequest = function (requests) {
+    console.log(requests);
     var _requests = [];
 
     requests.forEach(function (request) {

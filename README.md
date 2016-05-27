@@ -10,7 +10,7 @@ npm install
 ### Usage
 
 ```javascript
-var RequestPromiseBatch = require('./index');
+var RequestPromiseBatch = require('request-promise-batch');
 
 var config = {
     postOptions: {

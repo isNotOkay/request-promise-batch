@@ -1,7 +1,7 @@
 {
   "name": "request-promise-batch",
   "version": "1.0.0",
-  "description": "Utility to group multiple HTTP-requests and execute them in serial, based on request-promise.",
+  "description": "Utility to group multiple HTTP-requests and execute them in serial, using the full power of request-promise.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

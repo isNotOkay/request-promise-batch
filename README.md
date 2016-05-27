@@ -4,7 +4,7 @@ Utility to create reusable HTTP-requests and execute them in serial, using the f
 
 ### Installation
 ```javascript
-npm install
+npm install request-promise-batch
 ```
 
 ### Usage
